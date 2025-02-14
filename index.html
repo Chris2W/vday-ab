@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Starry Memories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #ffe6ea;
+            color: #1a0011;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hearts Background Animation */
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            transform: rotate(45deg);
+            opacity: 0.3;
+            animation: floatHeart linear infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff69b4;
+        }
+
+        .heart::before {
+            left: -10px;
+        }
+
+        .heart::after {
+            top: -10px;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: rotate(45deg) translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .login-container, .memory-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 192, 203, 0.3);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .memory-container {
+            display: none;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #ff69b4;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a0011;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ff1493;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #ff69b4;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .images-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .sky-map, .moon, .memory-photo {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background: rgba(255, 192, 203, 0.3);
+            border-radius: 10px;
+            border: 3px solid #ff69b4;
+        }
+
+        .memory-photo {
+            grid-column: 1 / -1;
+        }
+
+        .memory-text {
+            padding: 20px;
+            background: rgba(255, 192, 203, 0.3);
+            border-radius: 10px;
+            border: 2px solid #ff69b4;
+            text-align: left;
+            line-height: 1.6;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #1a0011;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .date {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #ff1493;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .final-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            border: 2px solid #ff69b4;
+            margin: 50px auto;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            color: #1a0011;
+        }
+
+        h1 {
+            color: #ff1493;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .images-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sky-map, .moon, .memory-photo {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container"></div>
+
+    <div class="login-container">
+        <h1>Our Story Written in the Stars</h1>
+        <input type="password" id="password" placeholder="Enter the password...">
+        <button onclick="checkPassword()">Enter</button>
+    </div>
+
+    <div class="memory-container">
+        <h2 class="date"></h2>
+        <div class="content">
+            <div class="images-container">
+                <img class="sky-map" alt="Sky Map">
+                <img class="moon" alt="Moon Phase">
+                <img class="memory-photo" alt="Our Memory">
+            </div>
+            <div class="memory-text"></div>
+        </div>
+        <div class="navigation">
+            <button onclick="showPrevious()">Previous</button>
+            <button onclick="showNext()">Next</button>
+        </div>
+    </div>
+
+    <div class="final-message"></div>
+
+    <script type="module">
+        
+        // Create floating hearts
+        function createHearts() {
+            const container = document.querySelector('.hearts-container');
+            const numberOfHearts = 30;
+
+            for (let i = 0; i < numberOfHearts; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                
+                // Random starting position
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                
+                // Random size
+                const size = Math.random() * 15 + 10;
+                heart.style.width = size + 'px';
+                heart.style.height = size + 'px';
+                
+                // Random animation duration
+                const duration = Math.random() * 15 + 10;
+                heart.style.animationDuration = duration + 's';
+                
+                container.appendChild(heart);
+            }
+        }
+
+        const CORRECT_PASSWORD = "didfixult";
+        const memories = [
+            {
+                date: "10.26.2024",
+                starphoto: "./stars/star1.png",
+                moonphoto: "./moons/moon1.png",
+                memory: "./memory/memory1.png",
+                text: "Our first convo!",
+                starfact: "The Caelum constellation, whose name means the chisel in Latin, is one of the faintest constellations in the sky. In some esoteric interpretations, constellations tied to tools (like Caelum’s chisel) represent the idea that the universe provides us with everything we need to craft our own fate—but it is up to us to use those tools wisely.",
+                funfact: "On this day: A constitutional law of perpetual neutrality in Austria was promulgated.",
+                gifs: ["./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif"]
+            },
+            {
+                date: "11.25.2024",
+                starphoto: "./stars/star2.png",
+                moonphoto: "./moons/moon2.png",
+                memory: "./memory/memory2.jpg",
+                text: "Chris Wu top 10 highlights SIUUUUU",
+                starfact: "In mythology, Cancer was placed in the sky by Hera. While the crab was originally sent to hinder Hercules, its immortalization in the stars can be seen as a symbol of devotion, loyalty, and the sacrifices one makes for love",
+                funfact: "November 25 is St. Catherine’s Day, which was traditionally associated with matchmaking in parts of France and Quebec. Unmarried women, called Catherinettes, would pray for a husband on this day." ,
+                gifs: ["./gifs/siuu.gif"]
+            },
+            {
+                date: "01.16.2025",
+                starphoto: "./stars/star3.png",
+                moonphoto: "./moons/moon3.png",
+                memory: "./memory/memory3.jpg",
+                text: "The day i ceased to believe you werent real",
+                starfact: "Corona Australis is a faint constellation, often overlooked, but it holds a stunning secret: a beautiful dark nebula (the Corona Australis Molecular Cloud) filled with newborn stars! While Corona Australis doesn’t have a direct myth, it is sometimes associated with a laurel wreath given as a reward, which could be seen as a symbol of love’s triumph and devotion—like to those who have endured challenges and emerged stronger together.",
+                funfact: "The famous Fig Newton cookie was patented on this day in 1892!" ,
+                gifs: ["./gifs/sao.gif"]
+            }
+        ];
+
+        const finalMessageData = {
+            text: `Happy Valentine's Day pookie❤️🐺`,
+            gif: "./gifs/vday.gif",
+            videoLink: "./gifs/us.mp4"
+        };
+        
+        let currentIndex = 0;
+
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === CORRECT_PASSWORD) {
+                document.querySelector('.login-container').style.display = 'none';
+                document.querySelector('.memory-container').style.display = 'block';
+                showMemory(0);
+            } else {
+                alert('Incorrect password. Try again!');
+            }
+        }
+
+        function showMemory(index) {
+            if (index >= memories.length) {
+                showFinalMessage();
+                return;
+            }
+
+            const memory = memories[index];
+            document.querySelector('.date').textContent = new Date(memory.date).toLocaleDateString();
+            const textContainer = document.querySelector('.memory-text');
+            textContainer.innerHTML = `
+                <p style="margin-bottom: 20px;">${memory.text}</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    ${memory.gifs.map(gif => `
+                        <img src="${gif}" alt="Memory GIF" style="width: 100%; border-radius: 8px;">
+                    `).join('')}
+                </div>
+            `;
+
+            document.querySelector('.sky-map').src = memories[index].starphoto;
+            document.querySelector('.moon').src = memories[index].moonphoto;
+            document.querySelector('.memory-photo').src = memories[index].memory;
+
+        }
+
+        function showPrevious() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showMemory(currentIndex);
+            }
+        }
+
+        let nextButtonState = 0; // 0: normal, 1: "Are you sure?", 2: "Are you ready?"
+
+        function showNext() {
+            if (currentIndex < memories.length - 1) {
+                currentIndex++;
+                nextButtonState = 0; // Reset state when showing next memory
+                showMemory(currentIndex);
+            } else if (currentIndex === memories.length - 1) {
+                const nextButton = document.querySelector('.navigation button:last-child');
+                
+                if (nextButtonState === 0) {
+                    nextButtonState = 1;
+                    nextButton.innerHTML = "Are you sure?";
+                    nextButton.style.transform = "scale(1.2)";
+                    nextButton.style.transition = "all 0.3s ease";
+                } else if (nextButtonState === 1) {
+                    nextButtonState = 2;
+                    nextButton.innerHTML = "Are you ready?";
+                    nextButton.style.transform = "scale(1.5)";
+                } else if (nextButtonState === 2) {
+                    nextButtonState = 3;
+                    nextButton.innerHTML = "Click for your surprise! ♥";
+                    nextButton.style.transform = "scale(2)";
+                } else {
+                    showFinalMessage();
+                }
+            }
+        }
+
+
+        function showFinalMessage() {
+            document.querySelector('.memory-container').style.display = 'none';
+            const finalMessageElement = document.querySelector('.final-message');
+            finalMessageElement.style.display = 'block';
+            finalMessageElement.innerHTML = `
+                <div style="margin-bottom: 30px;">${finalMessageData.text}</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                    <img src="${finalMessageData.gif}" alt="Final Message GIF" style="width: 100%; max-width: 400px; border-radius: 8px;">
+                </div>
+                <a href="${finalMessageData.videoLink}" target="_blank" style="display: inline-block; margin: 20px 0; color: #ff1493; text-decoration: none; font-size: 1.2em; transition: all 0.3s ease;">
+                    🚫 super top secret classified confidential restriced link that you should totally not click🚫
+                </a>
+                <button onclick="startOver()" style="margin-top: 30px;">Start Over</button>
+            `;
+        }
+
+        function startOver() {
+            // Reset everything
+            currentIndex = 0;
+            document.querySelector('.final-message').style.display = 'none';
+            document.querySelector('.memory-container').style.display = 'none';
+            document.querySelector('.login-container').style.display = 'flex';
+            document.getElementById('password').value = '';
+        }
+
+        // Initialize password field to handle Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Create hearts when the page loads
+        createHearts();
+
+        // Recreate hearts periodically
+        setInterval(() => {
+            const container = document.querySelector('.hearts-container');
+            container.innerHTML = '';
+            createHearts();
+        }, 25000); // Recreate hearts every 25 seconds
+    </script>
+</body>
+</html>
