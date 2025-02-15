@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: "Verdana", sans-serif;
         }
 
         body {
@@ -276,9 +276,9 @@
                 moonphoto: "./moons/moon1.png",
                 memory: "./memory/memory1.png",
                 text: "Our first convo!",
-                starfact: "The Caelum constellation, whose name means the chisel in Latin, is one of the faintest constellations in the sky. In some esoteric interpretations, constellations tied to tools (like Caelum’s chisel) represent the idea that the universe provides us with everything we need to craft our own fate—but it is up to us to use those tools wisely.",
+                starfact: "It's too late to be able to find a lot of my friend and I's first text exchange since it's already been so long, but I didn't want that happen for us, so if you ever wonder in the future how we started, now u know!",
                 funfact: "On this day: A constitutional law of perpetual neutrality in Austria was promulgated.",
-                gifs: ["./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif"]
+                gifs: ["./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif","./gifs/catdance.gif"]
             },
             {
                 date: "11.25.2024",
@@ -286,7 +286,7 @@
                 moonphoto: "./moons/moon2.png",
                 memory: "./memory/memory2.jpg",
                 text: "Chris Wu top 10 highlights SIUUUUU",
-                starfact: "In mythology, Cancer was placed in the sky by Hera. While the crab was originally sent to hinder Hercules, its immortalization in the stars can be seen as a symbol of devotion, loyalty, and the sacrifices one makes for love",
+                starfact: "Fun fact, the next day i finally got yo number (i proceeded to order animal crossing and sent you a screenshot of my order)",
                 funfact: "November 25 is St. Catherine’s Day, which was traditionally associated with matchmaking in parts of France and Quebec. Unmarried women, called Catherinettes, would pray for a husband on this day." ,
                 gifs: ["./gifs/siuu.gif"]
             },
@@ -295,10 +295,10 @@
                 starphoto: "./stars/star3.png",
                 moonphoto: "./moons/moon3.png",
                 memory: "./memory/memory3.jpg",
-                text: "The day i ceased to believe you werent real",
-                starfact: "Corona Australis is a faint constellation, often overlooked, but it holds a stunning secret: a beautiful dark nebula (the Corona Australis Molecular Cloud) filled with newborn stars! While Corona Australis doesn’t have a direct myth, it is sometimes associated with a laurel wreath given as a reward, which could be seen as a symbol of love’s triumph and devotion—like to those who have endured challenges and emerged stronger together.",
+                text: "First date!",
+                starfact: "If i have to do another first date I'd probably have to hire actors and stuntmen and set pieces just to top this one",
                 funfact: "The famous Fig Newton cookie was patented on this day in 1892!" ,
-                gifs: ["./gifs/sao.gif"]
+                gifs: ["./gifs/marmot.gif"]
             }
         ];
 
@@ -309,7 +309,7 @@
         };
         
         let currentIndex = 0;
-
+        let nextButton = 0;
         function checkPassword() {
             const password = document.getElementById('password').value;
             if (password === CORRECT_PASSWORD) {
@@ -332,6 +332,7 @@
             const textContainer = document.querySelector('.memory-text');
             textContainer.innerHTML = `
                 <p style="margin-bottom: 20px;">${memory.text}</p>
+                <p>${memory.starfact}</p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
                     ${memory.gifs.map(gif => `
                         <img src="${gif}" alt="Memory GIF" style="width: 100%; border-radius: 8px;">
@@ -360,7 +361,7 @@
                 nextButtonState = 0; // Reset state when showing next memory
                 showMemory(currentIndex);
             } else if (currentIndex === memories.length - 1) {
-                const nextButton = document.querySelector('.navigation button:last-child');
+                nextButton = document.querySelector('.navigation button:last-child');
                 
                 if (nextButtonState === 0) {
                     nextButtonState = 1;
@@ -394,13 +395,14 @@
                 <a href="${finalMessageData.videoLink}" target="_blank" style="display: inline-block; margin: 20px 0; color: #ff1493; text-decoration: none; font-size: 1.2em; transition: all 0.3s ease;">
                     🚫 super top secret classified confidential restriced link that you should totally not click🚫
                 </a>
-                <button onclick="startOver()" style="margin-top: 30px;">Start Over</button>
             `;
         }
 
         function startOver() {
             // Reset everything
             currentIndex = 0;
+            nextButton = 0;
+            nextButtonState = 0;
             document.querySelector('.final-message').style.display = 'none';
             document.querySelector('.memory-container').style.display = 'none';
             document.querySelector('.login-container').style.display = 'flex';
