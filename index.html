@@ -370,11 +370,16 @@
                     nextButton.style.transition = "all 0.3s ease";
                 } else if (nextButtonState === 1) {
                     nextButtonState = 2;
-                    nextButton.innerHTML = "Are you ready?";
+                    nextButton.innerHTML = "Are you sure you sure you sure???";
                     nextButton.style.transform = "scale(1.5)";
                 } else if (nextButtonState === 2) {
                     nextButtonState = 3;
-                    nextButton.innerHTML = "Click for your surprise! ♥";
+                    nextButton.innerHTML = "Stop.";
+                    nextButton.style.transform = "scale(2)";
+                } 
+                else if (nextButtonState === 3) {
+                    nextButtonState = 4;
+                    nextButton.innerHTML = "Fuck it click for your surprise! ♥";
                     nextButton.style.transform = "scale(2)";
                 } else {
                     showFinalMessage();
